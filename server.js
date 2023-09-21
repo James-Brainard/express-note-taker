@@ -12,7 +12,7 @@
 // WHEN I click on the Write icon in the navigation at the top of the page
 // THEN I am presented with empty fields to enter a new note title and the note’s text in the right-hand column
 
-const { v4: uuidv4 } = require('uuid');
+const { uuid } = require('uuidv4');
 const express = require('express');
 const path = require('path');
 const fs = require('fs');
@@ -51,44 +51,46 @@ app.get('/api/notes', (req, res) => {
 
 
 // POST /api/notes should receive a new note to save on the request body
-app.post('./api/notes', async (req, res) => {
+app.post('/api/notes', async (req, res) => {
   try {
-  console.info(`${req.method} request have been received to POST`);
-  
-  const { title, text } = req.info;
-  
-  if (title && text) {
-    const newField = {
-      title,
-      text,
-      // Give each note a unique ID when it's saved. NPM packages can help with this
-      review_id: uuidv4()
+    const { title, text } = req.body;
+
+    if (title && text) {
+      const newField = {
+        title,
+        text,
+        // Give each note a unique ID when it's saved. NPM packages can help with this
+        id: uuid()
+      }
+      const dataText = await fs.readFileSync('./db/db.json', 'utf8');
+
+      const dataArr = JSON.parse(dataText);
+
+      dataArr.push(newField);
+
+      const textString = JSON.stringify(dataArr, null, 2);
+
+      await fs.writeFileSync('./db/db.json', textString);
+
+      console.info('New note has been written to JSON file!')
+
+      const response = {
+        status: 'success',
+        body: newField
+      }
+
+      return res.status(201).json(response);
+    } else {
+      return res.status(500).json('Error in posting new note');
     }
-    const dataText = await fs.readFile('./db/db.json', 'utf8');
-
-    const dataArr = JSON.parse(dataText);
-
-    dataArr.push(newField);
-
-    const textString = JSON.stringify(dataArr, null, 2);
-
-    await fs.writeFile('./db/db.json', textString);
-
-    console.info('New note has been written to JSON file!')
-    
-    const response = {
-      status: 'success',
-      body: newField,
-    };
-
-    return res.status(200).json(response);
-  } else {
-    return res.status(500).json('Error in posting new note');
+  } catch (err) {
+    return res.status(500).json(err);
   }
-} catch (err) {
-  return res.status(500).json(err);
-}
 });
+
+// Need to DELETE /api/notes/:id should receive a query parameter containing the id of a note to delete.
+// In order to delete a note, you'll need to read all notes from the db.json file, remove the note with the given id property, and then rewrite the notes to the db.json file.
+
 
 
 // add it to the db.json file, then return the new note to the client.
