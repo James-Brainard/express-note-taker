@@ -17,7 +17,7 @@ const express = require('express');
 const path = require('path');
 const fs = require('fs');
 
-const PORT = 3001;
+const PORT = process.env.PORT || 3001;
 
 const app = express();
 
@@ -90,10 +90,39 @@ app.post('/api/notes', async (req, res) => {
 
 // Need to DELETE /api/notes/:id should receive a query parameter containing the id of a note to delete.
 // In order to delete a note, you'll need to read all notes from the db.json file, remove the note with the given id property, and then rewrite the notes to the db.json file.
-
-
-
-// add it to the db.json file, then return the new note to the client.
+// Need to delete the note of the specific ID
+// I have to parse through the Array Object
+// params: { id: };
+app.delete('/api/notes/:id', async (req, res) => {
+  try {
+    // console.log(req);
+    // how to get all the notes id's
+    const dataId = await fs.readFileSync('./db/db.json', 'utf8');
+    const idArr = JSON.parse(dataId);
+    const requestedId = req.params.id;
+    // arr & id
+    // template of what the array should look like
+    // if accum == 
+    function removeId(array, id) {
+      return array.reduce((accum, currentValue) => {
+        console.log(currentValue);
+        if (currentValue.id !== id) {
+          accum.push(currentValue);
+        }
+        console.log(accum);
+        return accum;
+      }, [])
+    }
+    // How it needs to look after the deletion
+    // deletedArr = removed id () ??
+    let removal = removeId(idArr, requestedId);
+    const writeRemoval = JSON.stringify(removal, null, 2);
+    await fs.writeFileSync('./db/db.json', writeRemoval);
+    return res.status(201).json('removed');
+  } catch (err) {
+    return res.status(500).json(err);
+  }
+});
 
 
 // Get * should return the index.html file
