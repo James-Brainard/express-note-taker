@@ -2,7 +2,7 @@
 
 ## Description
 
-An application that can be used to write and save notes called Express Note Taker.
+An application that can be used to write and save notes called Express Note Taker. This application will use an Express.js back end and will save and retrieve note data from a JSON file.
 
 # Installation
 
@@ -13,7 +13,7 @@ git
 
 ## Usage
 
-An easy way to jot down notes that will persist through reload. You can remove any notes that are no longer viable.
+An easy way to jot down notes that will remain on the page. You can remove any notes that are no longer viable by deleting along with viewing older notes. 
 
 ## Credits
 
@@ -28,6 +28,7 @@ GNUv3
 JavaScript
 Node.js
 Express.js
+Heroku
 
 ## Questions
 
