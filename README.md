@@ -6,9 +6,14 @@ An application that can be used to write and save notes called Express Note Take
 
 # Installation
 
+Please install the following to properly run/create a similar application.
+
 vsCode
+
 Node.js
+
 Express.js
+
 git
 
 ## Usage
