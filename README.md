@@ -31,8 +31,11 @@ GNUv3
 ## Technologies
 
 JavaScript
+
 Node.js
+
 Express.js
+
 Heroku
 
 ## Questions
