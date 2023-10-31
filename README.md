@@ -40,7 +40,7 @@ Heroku
 
 ## Questions
 
-Please email me at james.brainard2@aol.com for any questions or collaboration ideas.
+Please email me at james.brainard202@gmail.com for any questions or collaboration ideas.
 
 ## Link to deployed site
 
